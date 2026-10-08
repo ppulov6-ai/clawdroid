@@ -17,6 +17,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import java.util.UUID
+import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.coroutines.resume
 
 class TextToSpeechWrapper(
@@ -26,6 +27,7 @@ class TextToSpeechWrapper(
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     private val mutex = Mutex()
+    private val speechMutex = Mutex()
 
     private var tts: TextToSpeech? = null
     private var initialized = false
@@ -56,8 +58,12 @@ class TextToSpeechWrapper(
         val generation = ++engineGeneration
 
         val listener = TextToSpeech.OnInitListener { status ->
-            if (generation == engineGeneration && status == TextToSpeech.SUCCESS) {
-                initialized = true
+            scope.launch {
+                mutex.withLock {
+                    if (generation == engineGeneration && status == TextToSpeech.SUCCESS) {
+                        initialized = true
+                    }
+                }
             }
         }
 
@@ -91,7 +97,11 @@ class TextToSpeechWrapper(
         return true
     }
 
-    suspend fun speak(text: String): Boolean = withContext(Dispatchers.Main) {
+    suspend fun speak(text: String): Boolean = speechMutex.withLock {
+        speakExclusive(text)
+    }
+
+    private suspend fun speakExclusive(text: String): Boolean = withContext(Dispatchers.Main) {
         // Привязка к движку асинхронная: первая команда ждёт её завершения.
         val ready = withTimeoutOrNull(5_000) {
             while (!initialized && tts != null) delay(50)
@@ -114,42 +124,39 @@ class TextToSpeechWrapper(
         }
 
         val utteranceId = UUID.randomUUID().toString()
+        val completed = AtomicBoolean(false)
+        fun finish(success: Boolean) {
+            if (completed.compareAndSet(false, true) && cont.isActive) cont.resume(success)
+        }
 
         engine.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
             override fun onStart(id: String?) {}
 
             override fun onDone(id: String?) {
-                if (id == utteranceId && cont.isActive) {
-                    cont.resume(true)
-                }
+                if (id == utteranceId) finish(true)
             }
 
             override fun onStop(id: String?, interrupted: Boolean) {
-                if (id == utteranceId && cont.isActive) cont.resume(false)
+                if (id == utteranceId) finish(false)
             }
 
             @Deprecated("Deprecated in Java")
             override fun onError(id: String?) {
-                if (id == utteranceId && cont.isActive) {
-                    cont.resume(false)
-                }
+                if (id == utteranceId) finish(false)
             }
 
             override fun onError(id: String?, errorCode: Int) {
-                if (id == utteranceId && cont.isActive) {
-                    cont.resume(false)
-                }
+                if (id == utteranceId) finish(false)
             }
         })
 
         cont.invokeOnCancellation {
+            completed.set(true)
             engine.stop()
         }
 
-        if (engine.speak(text, TextToSpeech.QUEUE_FLUSH, null, utteranceId) == TextToSpeech.ERROR
-            && cont.isActive
-        ) {
-            cont.resume(false)
+        if (engine.speak(text, TextToSpeech.QUEUE_FLUSH, null, utteranceId) == TextToSpeech.ERROR) {
+            finish(false)
         }
     }
 

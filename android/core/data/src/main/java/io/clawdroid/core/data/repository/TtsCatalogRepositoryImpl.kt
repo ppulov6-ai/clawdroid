@@ -25,6 +25,7 @@ class TtsCatalogRepositoryImpl(
     private val mutex = Mutex()
     private var tts: TextToSpeech? = null
     private var initialized = false
+    private var engineGeneration = 0
     private var currentEnginePackage: String? = null
 
     private val _availableEngines = MutableStateFlow<List<TtsEngineInfo>>(emptyList())
@@ -54,12 +55,17 @@ class TtsCatalogRepositoryImpl(
         initialized = false
         _availableVoices.value = emptyList()
         currentEnginePackage = enginePackageName
+        val generation = ++engineGeneration
 
         val listener = TextToSpeech.OnInitListener { status ->
-            if (status == TextToSpeech.SUCCESS) {
-                initialized = true
-                loadAvailableEngines()
-                loadAvailableVoices()
+            scope.launch {
+                mutex.withLock {
+                    if (generation == engineGeneration && status == TextToSpeech.SUCCESS) {
+                        initialized = true
+                        loadAvailableEngines()
+                        loadAvailableVoices()
+                    }
+                }
             }
         }
 
