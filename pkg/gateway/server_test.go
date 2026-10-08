@@ -215,14 +215,14 @@ func TestBuildSchema_Labels(t *testing.T) {
 	}
 }
 
-func TestBuildSchema_LabelsJapanese(t *testing.T) {
-	schema := BuildSchema(config.DefaultConfig(), "ja")
+func TestBuildSchema_LabelsRussian(t *testing.T) {
+	schema := BuildSchema(config.DefaultConfig(), "ru")
 
 	wantLabels := map[string]string{
-		"api_key":             "APIキー",
-		"base_url":            "ベースURL",
-		"defaults.max_tokens": "最大トークン数",
-		"slack.bot_token":     "ボットトークン",
+		"api_key":             "Ключ API",
+		"base_url":            "Базовый URL",
+		"defaults.max_tokens": "Максимум токенов",
+		"slack.bot_token":     "Токен бота",
 	}
 
 	for _, sec := range schema.Sections {

@@ -869,6 +869,9 @@ func (al *AgentLoop) runLLMIteration(ctx context.Context, messages []providers.M
 					opts.InputMode,
 					opts.ResolvedUser,
 				)
+				if len(messages) > 0 && messages[0].Role == "system" {
+					messages[0].Content += "\nОтвечай пользователю по-русски. Твоё имя — Джарвисджон. Не утверждай, что действие выполнено, если результат не подтверждён."
+				}
 
 				continue
 			}

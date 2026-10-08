@@ -7,6 +7,7 @@ import io.clawdroid.core.domain.model.VoicePhase
 import io.clawdroid.core.domain.usecase.ObserveMessagesUseCase
 import io.clawdroid.core.domain.usecase.ObserveStatusUseCase
 import io.clawdroid.core.domain.usecase.SendMessageUseCase
+import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
@@ -214,7 +215,7 @@ class VoiceModeManager(
             _state.update {
                 it.copy(phase = VoicePhase.ERROR, errorMessage = "Локальная русская озвучка недоступна. Установите русский голос в настройках синтеза речи Android.")
             }
-            return
+            awaitCancellation()
         }
         while (true) {
             val next = speechQueue.tryReceive().getOrNull() ?: break
@@ -223,7 +224,7 @@ class VoiceModeManager(
                 _state.update {
                     it.copy(phase = VoicePhase.ERROR, errorMessage = "Локальная русская озвучка недоступна. Установите русский голос в настройках синтеза речи Android.")
                 }
-                return
+                awaitCancellation()
             }
         }
     }

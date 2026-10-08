@@ -56,9 +56,16 @@ class SettingsViewModel(
 
     fun onTestSpeak() {
         viewModelScope.launch {
-            _uiState.update { it.copy(isTesting = true) }
-            ttsWrapper.speak("Здравствуйте, Пулат. Я Джарвисджон. Проверка русского голоса.")
-            _uiState.update { it.copy(isTesting = false) }
+            _uiState.update { it.copy(isTesting = true, testError = null) }
+            try {
+                if (!ttsWrapper.speak("Здравствуйте, Пулат. Я Джарвисджон. Проверка русского голоса.")) {
+                    _uiState.update {
+                        it.copy(testError = "Не удалось озвучить текст. Проверьте наличие локального русского голоса в настройках синтеза речи Android.")
+                    }
+                }
+            } finally {
+                _uiState.update { it.copy(isTesting = false) }
+            }
         }
     }
 }

@@ -29,7 +29,8 @@ jobs:
       - name: Проверить Go
         run: |
           gofmt -w pkg/i18n pkg/agent/voice_prompt.go pkg/agent/loop.go
-          go test ./pkg/i18n/... ./pkg/agent/...
+          go generate ./...
+          go test ./...
       - name: Собрать встроенный модуль ARM64
         run: make build-android-arm64
       - name: Подготовить Java

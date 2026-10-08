@@ -81,7 +81,7 @@ func TestHostFromURL(t *testing.T) {
 	}
 }
 
-// --- statusLabel (Japanese locale, preserving original test expectations) ---
+// --- statusLabel (Russian locale, preserving original test expectations) ---
 
 func TestStatusLabel(t *testing.T) {
 	tests := []struct {
@@ -91,39 +91,39 @@ func TestStatusLabel(t *testing.T) {
 		contains string
 	}{
 		{"web_search with query", "web_search", map[string]interface{}{"query": "golang"}, "golang"},
-		{"web_search no query", "web_search", map[string]interface{}{}, "検索中..."},
+		{"web_search no query", "web_search", map[string]interface{}{}, "Ищу..."},
 		{"web_fetch with url", "web_fetch", map[string]interface{}{"url": "https://example.com/page"}, "example.com"},
-		{"web_fetch no url", "web_fetch", map[string]interface{}{}, "ページ取得中..."},
+		{"web_fetch no url", "web_fetch", map[string]interface{}{}, "Загружаю страницу..."},
 		{"read_file with path", "read_file", map[string]interface{}{"path": "/home/user/file.txt"}, "file.txt"},
-		{"read_file no path", "read_file", map[string]interface{}{}, "ファイル読み取り中..."},
+		{"read_file no path", "read_file", map[string]interface{}{}, "Читаю файл..."},
 		{"write_file", "write_file", map[string]interface{}{"path": "/tmp/out.txt"}, "out.txt"},
-		{"edit_file", "edit_file", map[string]interface{}{}, "ファイル編集中..."},
-		{"append_file", "append_file", map[string]interface{}{}, "ファイル追記中..."},
+		{"edit_file", "edit_file", map[string]interface{}{}, "Редактирую файл..."},
+		{"append_file", "append_file", map[string]interface{}{}, "Дополняю файл..."},
 		{"list_dir with path", "list_dir", map[string]interface{}{"path": "/home/user/docs"}, "docs/"},
-		{"list_dir no path", "list_dir", map[string]interface{}{}, "フォルダ確認中..."},
+		{"list_dir no path", "list_dir", map[string]interface{}{}, "Проверяю папку..."},
 		{"exec with command", "exec", map[string]interface{}{"command": "ls -la"}, "ls -la"},
-		{"exec no command", "exec", map[string]interface{}{}, "コマンド実行中..."},
-		{"memory", "memory", map[string]interface{}{"action": "read_long_term"}, "メモリ読み込み中..."},
-		{"skill", "skill", map[string]interface{}{"action": "skill_list"}, "スキル一覧取得中..."},
-		{"cron", "cron", map[string]interface{}{"action": "add"}, "リマインダー設定中..."},
-		{"message", "message", map[string]interface{}{}, "メッセージ送信中..."},
+		{"exec no command", "exec", map[string]interface{}{}, "Выполняю команду..."},
+		{"memory", "memory", map[string]interface{}{"action": "read_long_term"}, "Загружаю память..."},
+		{"skill", "skill", map[string]interface{}{"action": "skill_list"}, "Получаю список навыков..."},
+		{"cron", "cron", map[string]interface{}{"action": "add"}, "Создаю напоминание..."},
+		{"message", "message", map[string]interface{}{}, "Отправляю сообщение..."},
 		{"spawn with label", "spawn", map[string]interface{}{"label": "task1"}, "task1"},
-		{"spawn no label", "spawn", map[string]interface{}{}, "サブタスク開始中..."},
+		{"spawn no label", "spawn", map[string]interface{}{}, "Запускаю подзадачу..."},
 		{"subagent with label", "subagent", map[string]interface{}{"label": "sub1"}, "sub1"},
-		{"subagent no label", "subagent", map[string]interface{}{}, "サブタスク実行中..."},
-		{"android", "android", map[string]interface{}{"action": "screenshot"}, "スクリーンショット撮影中..."},
-		{"exit", "exit", map[string]interface{}{}, "アシスタント終了中..."},
-		{"mcp", "mcp", map[string]interface{}{"action": "mcp_list"}, "MCPサーバー一覧取得中..."},
-		{"unknown tool", "unknown_tool", map[string]interface{}{}, "処理中..."},
+		{"subagent no label", "subagent", map[string]interface{}{}, "Выполняю подзадачу..."},
+		{"android", "android", map[string]interface{}{"action": "screenshot"}, "Делаю снимок экрана..."},
+		{"exit", "exit", map[string]interface{}{}, "Завершаю работу помощника..."},
+		{"mcp", "mcp", map[string]interface{}{"action": "mcp_list"}, "Получаю список серверов MCP..."},
+		{"unknown tool", "unknown_tool", map[string]interface{}{}, "Обрабатываю..."},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := statusLabel(tt.toolName, tt.args, "ja")
+			got := statusLabel(tt.toolName, tt.args, "ru")
 			if got == "" {
 				t.Error("statusLabel returned empty string")
 			}
 			if !containsStr(got, tt.contains) {
-				t.Errorf("statusLabel(%q, %v, ja) = %q, want to contain %q", tt.toolName, tt.args, got, tt.contains)
+				t.Errorf("statusLabel(%q, %v, ru) = %q, want to contain %q", tt.toolName, tt.args, got, tt.contains)
 			}
 		})
 	}
@@ -158,13 +158,13 @@ func TestStatusLabelEnglish(t *testing.T) {
 // --- fileStatusLabel ---
 
 func TestFileStatusLabel(t *testing.T) {
-	got := fileStatusLabel("ja", "status.reading_file", "status.reading_file_q", map[string]interface{}{"path": "/home/user/test.go"})
-	if got != "ファイル読み取り中...（test.go）" {
+	got := fileStatusLabel("ru", "status.reading_file", "status.reading_file_q", map[string]interface{}{"path": "/home/user/test.go"})
+	if got != "Читаю файл... (test.go)" {
 		t.Errorf("got %q", got)
 	}
 
-	got = fileStatusLabel("ja", "status.reading_file", "status.reading_file_q", map[string]interface{}{})
-	if got != "ファイル読み取り中..." {
+	got = fileStatusLabel("ru", "status.reading_file", "status.reading_file_q", map[string]interface{}{})
+	if got != "Читаю файл..." {
 		t.Errorf("got %q", got)
 	}
 }
@@ -176,15 +176,15 @@ func TestMemoryStatusLabel(t *testing.T) {
 		action string
 		want   string
 	}{
-		{"read_long_term", "メモリ読み込み中..."},
-		{"read_daily", "今日のメモ読み込み中..."},
-		{"write_long_term", "メモリ書き込み中..."},
-		{"append_daily", "今日のメモ追記中..."},
-		{"unknown", "メモリ操作中..."},
+		{"read_long_term", "Загружаю память..."},
+		{"read_daily", "Загружаю сегодняшние заметки..."},
+		{"write_long_term", "Сохраняю в память..."},
+		{"append_daily", "Дополняю сегодняшние заметки..."},
+		{"unknown", "Работаю с памятью..."},
 	}
 	for _, tt := range tests {
 		t.Run(tt.action, func(t *testing.T) {
-			got := memoryStatusLabel(map[string]interface{}{"action": tt.action}, "ja")
+			got := memoryStatusLabel(map[string]interface{}{"action": tt.action}, "ru")
 			if got != tt.want {
 				t.Errorf("memoryStatusLabel(%q) = %q, want %q", tt.action, got, tt.want)
 			}
@@ -200,14 +200,14 @@ func TestSkillStatusLabel(t *testing.T) {
 		args map[string]interface{}
 		want string
 	}{
-		{"skill_list", map[string]interface{}{"action": "skill_list"}, "スキル一覧取得中..."},
-		{"skill_read with name", map[string]interface{}{"action": "skill_read", "name": "github"}, "スキル読み込み中...（github）"},
-		{"skill_read no name", map[string]interface{}{"action": "skill_read"}, "スキル読み込み中..."},
-		{"unknown", map[string]interface{}{"action": "other"}, "スキル操作中..."},
+		{"skill_list", map[string]interface{}{"action": "skill_list"}, "Получаю список навыков..."},
+		{"skill_read with name", map[string]interface{}{"action": "skill_read", "name": "github"}, "Загружаю навык... (github)"},
+		{"skill_read no name", map[string]interface{}{"action": "skill_read"}, "Загружаю навык..."},
+		{"unknown", map[string]interface{}{"action": "other"}, "Работаю с навыком..."},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := skillStatusLabel(tt.args, "ja")
+			got := skillStatusLabel(tt.args, "ru")
 			if got != tt.want {
 				t.Errorf("got %q, want %q", got, tt.want)
 			}
@@ -222,14 +222,14 @@ func TestCronStatusLabel(t *testing.T) {
 		action string
 		want   string
 	}{
-		{"add", "リマインダー設定中..."},
-		{"list", "スケジュール一覧取得中..."},
-		{"remove", "スケジュール削除中..."},
-		{"unknown", "スケジュール変更中..."},
+		{"add", "Создаю напоминание..."},
+		{"list", "Получаю расписание..."},
+		{"remove", "Удаляю задачу из расписания..."},
+		{"unknown", "Изменяю расписание..."},
 	}
 	for _, tt := range tests {
 		t.Run(tt.action, func(t *testing.T) {
-			got := cronStatusLabel(map[string]interface{}{"action": tt.action}, "ja")
+			got := cronStatusLabel(map[string]interface{}{"action": tt.action}, "ru")
 			if got != tt.want {
 				t.Errorf("got %q, want %q", got, tt.want)
 			}
@@ -245,25 +245,25 @@ func TestAndroidStatusLabel(t *testing.T) {
 		args map[string]interface{}
 		want string
 	}{
-		{"search_apps", map[string]interface{}{"action": "search_apps"}, "アプリ検索中..."},
-		{"app_info with pkg", map[string]interface{}{"action": "app_info", "package_name": "com.example"}, "アプリ情報取得中...（com.example）"},
-		{"app_info no pkg", map[string]interface{}{"action": "app_info"}, "アプリ情報取得中..."},
-		{"launch_app with pkg", map[string]interface{}{"action": "launch_app", "package_name": "com.test"}, "アプリ起動中...（com.test）"},
-		{"launch_app no pkg", map[string]interface{}{"action": "launch_app"}, "アプリ起動中..."},
-		{"screenshot", map[string]interface{}{"action": "screenshot"}, "スクリーンショット撮影中..."},
-		{"get_ui_tree", map[string]interface{}{"action": "get_ui_tree"}, "UI要素取得中..."},
-		{"tap", map[string]interface{}{"action": "tap"}, "タップ中..."},
-		{"swipe", map[string]interface{}{"action": "swipe"}, "スワイプ中..."},
-		{"text", map[string]interface{}{"action": "text"}, "テキスト入力中..."},
-		{"keyevent with key", map[string]interface{}{"action": "keyevent", "key": "BACK"}, "キー操作中...（BACK）"},
-		{"keyevent no key", map[string]interface{}{"action": "keyevent"}, "キー操作中..."},
-		{"broadcast", map[string]interface{}{"action": "broadcast"}, "ブロードキャスト送信中..."},
-		{"intent", map[string]interface{}{"action": "intent"}, "インテント送信中..."},
-		{"unknown", map[string]interface{}{"action": "other"}, "デバイス操作中..."},
+		{"search_apps", map[string]interface{}{"action": "search_apps"}, "Ищу приложения..."},
+		{"app_info with pkg", map[string]interface{}{"action": "app_info", "package_name": "com.example"}, "Получаю сведения о приложении... (com.example)"},
+		{"app_info no pkg", map[string]interface{}{"action": "app_info"}, "Получаю сведения о приложении..."},
+		{"launch_app with pkg", map[string]interface{}{"action": "launch_app", "package_name": "com.test"}, "Открываю приложение... (com.test)"},
+		{"launch_app no pkg", map[string]interface{}{"action": "launch_app"}, "Открываю приложение..."},
+		{"screenshot", map[string]interface{}{"action": "screenshot"}, "Делаю снимок экрана..."},
+		{"get_ui_tree", map[string]interface{}{"action": "get_ui_tree"}, "Получаю элементы экрана..."},
+		{"tap", map[string]interface{}{"action": "tap"}, "Нажимаю..."},
+		{"swipe", map[string]interface{}{"action": "swipe"}, "Прокручиваю..."},
+		{"text", map[string]interface{}{"action": "text"}, "Ввожу текст..."},
+		{"keyevent with key", map[string]interface{}{"action": "keyevent", "key": "BACK"}, "Нажимаю клавишу... (BACK)"},
+		{"keyevent no key", map[string]interface{}{"action": "keyevent"}, "Нажимаю клавишу..."},
+		{"broadcast", map[string]interface{}{"action": "broadcast"}, "Отправляю системное событие..."},
+		{"intent", map[string]interface{}{"action": "intent"}, "Отправляю системную команду..."},
+		{"unknown", map[string]interface{}{"action": "other"}, "Управляю устройством..."},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := androidStatusLabel(tt.args, "ja")
+			got := androidStatusLabel(tt.args, "ru")
 			if got != tt.want {
 				t.Errorf("got %q, want %q", got, tt.want)
 			}
@@ -279,17 +279,17 @@ func TestMcpStatusLabel(t *testing.T) {
 		args map[string]interface{}
 		want string
 	}{
-		{"mcp_list", map[string]interface{}{"action": "mcp_list"}, "MCPサーバー一覧取得中..."},
-		{"mcp_tools with server", map[string]interface{}{"action": "mcp_tools", "server": "myserver"}, "MCPツール取得中...（myserver）"},
-		{"mcp_tools no server", map[string]interface{}{"action": "mcp_tools"}, "MCPツール取得中..."},
-		{"mcp_call tool+server", map[string]interface{}{"action": "mcp_call", "tool": "mytool", "server": "srv"}, "MCPツール実行中...（srv/mytool）"},
-		{"mcp_call tool only", map[string]interface{}{"action": "mcp_call", "tool": "mytool"}, "MCPツール実行中...（mytool）"},
-		{"mcp_call no args", map[string]interface{}{"action": "mcp_call"}, "MCPツール実行中..."},
-		{"unknown", map[string]interface{}{"action": "other"}, "MCP操作中..."},
+		{"mcp_list", map[string]interface{}{"action": "mcp_list"}, "Получаю список серверов MCP..."},
+		{"mcp_tools with server", map[string]interface{}{"action": "mcp_tools", "server": "myserver"}, "Получаю инструменты MCP... (myserver)"},
+		{"mcp_tools no server", map[string]interface{}{"action": "mcp_tools"}, "Получаю инструменты MCP..."},
+		{"mcp_call tool+server", map[string]interface{}{"action": "mcp_call", "tool": "mytool", "server": "srv"}, "Выполняю инструмент MCP... (srv/mytool)"},
+		{"mcp_call tool only", map[string]interface{}{"action": "mcp_call", "tool": "mytool"}, "Выполняю инструмент MCP... (mytool)"},
+		{"mcp_call no args", map[string]interface{}{"action": "mcp_call"}, "Выполняю инструмент MCP..."},
+		{"unknown", map[string]interface{}{"action": "other"}, "Работаю с MCP..."},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := mcpStatusLabel(tt.args, "ja")
+			got := mcpStatusLabel(tt.args, "ru")
 			if got != tt.want {
 				t.Errorf("got %q, want %q", got, tt.want)
 			}

@@ -116,4 +116,11 @@ class SettingsViewModelTest {
         coVerify { ttsWrapper.speak("Здравствуйте, Пулат. Я Джарвисджон. Проверка русского голоса.") }
         assertFalse(viewModel.uiState.value.isTesting)
     }
+    @Test
+    fun `failed local speech leaves a visible error and resets testing flag`() = runTest {
+        coEvery { ttsWrapper.speak(any()) } returns false
+        viewModel.onTestSpeak()
+        assertFalse(viewModel.uiState.value.isTesting)
+        assertEquals(true, viewModel.uiState.value.testError?.isNotBlank())
+    }
 }

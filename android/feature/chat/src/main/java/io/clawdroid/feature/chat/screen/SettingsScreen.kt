@@ -150,14 +150,14 @@ fun SettingsScreen(
                 SliderSetting(
                     label = stringResource(R.string.settings_tts_speed),
                     value = uiState.ttsConfig.speechRate,
-                    valueRange = 0.5f..2.0f,
+                    valueRange = 0.8f..1.2f,
                     onValueChangeFinished = viewModel::onSpeechRateChanged
                 )
 
                 SliderSetting(
                     label = stringResource(R.string.settings_tts_pitch),
                     value = uiState.ttsConfig.pitch,
-                    valueRange = 0.5f..2.0f,
+                    valueRange = 0.8f..1.2f,
                     onValueChangeFinished = viewModel::onPitchChanged
                 )
 
@@ -170,6 +170,10 @@ fun SettingsScreen(
                     )
                 ) {
                     Text(if (uiState.isTesting) stringResource(R.string.settings_tts_speaking) else stringResource(R.string.settings_tts_test))
+                }
+
+                uiState.testError?.let { message ->
+                    Text(message, color = MaterialTheme.colorScheme.error)
                 }
 
                 Spacer(Modifier.height(8.dp))

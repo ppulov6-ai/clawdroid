@@ -8,8 +8,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.sync.Mutex
@@ -27,6 +29,7 @@ class TextToSpeechWrapper(
 
     private var tts: TextToSpeech? = null
     private var initialized = false
+    private var engineGeneration = 0
     private var currentConfig = TtsConfig()
     private var currentEnginePackage: String? = null
 
@@ -35,20 +38,13 @@ class TextToSpeechWrapper(
 
         scope.launch {
             ttsConfigFlow.collect { config ->
-                mutex.withLock { currentConfig = config }
-            }
-        }
-
-        scope.launch {
-            ttsConfigFlow
-                .distinctUntilChangedBy { it.enginePackageName }
-                .collect { config ->
-                    mutex.withLock {
-                        if (config.enginePackageName != currentEnginePackage) {
-                            switchEngine(config.enginePackageName)
-                        }
+                mutex.withLock {
+                    currentConfig = config.normalized()
+                    if (config.enginePackageName != currentEnginePackage) {
+                        switchEngine(config.enginePackageName)
                     }
                 }
+            }
         }
     }
 
@@ -57,9 +53,10 @@ class TextToSpeechWrapper(
         tts?.shutdown()
         initialized = false
         currentEnginePackage = enginePackageName
+        val generation = ++engineGeneration
 
         val listener = TextToSpeech.OnInitListener { status ->
-            if (status == TextToSpeech.SUCCESS) {
+            if (generation == engineGeneration && status == TextToSpeech.SUCCESS) {
                 initialized = true
             }
         }
@@ -94,7 +91,17 @@ class TextToSpeechWrapper(
         return true
     }
 
-    suspend fun speak(text: String): Boolean = suspendCancellableCoroutine { cont ->
+    suspend fun speak(text: String): Boolean = withContext(Dispatchers.Main) {
+        // Привязка к движку асинхронная: первая команда ждёт её завершения.
+        val ready = withTimeoutOrNull(5_000) {
+            while (!initialized && tts != null) delay(50)
+            initialized
+        } ?: false
+        if (!ready) return@withContext false
+        withTimeoutOrNull(60_000) { speakReady(text) } ?: false
+    }
+
+    private suspend fun speakReady(text: String): Boolean = suspendCancellableCoroutine { cont ->
         val engine = tts
         if (engine == null || !initialized) {
             cont.resume(false)
@@ -115,6 +122,10 @@ class TextToSpeechWrapper(
                 if (id == utteranceId && cont.isActive) {
                     cont.resume(true)
                 }
+            }
+
+            override fun onStop(id: String?, interrupted: Boolean) {
+                if (id == utteranceId && cont.isActive) cont.resume(false)
             }
 
             @Deprecated("Deprecated in Java")
@@ -147,6 +158,8 @@ class TextToSpeechWrapper(
     }
 
     fun destroy() {
+        ++engineGeneration
+        initialized = false
         scope.cancel()
         tts?.stop()
         tts?.shutdown()
