@@ -64,7 +64,7 @@ jobs:
             NOTES="* v${{ steps.next.outputs.version }}"
           fi
           CODE=${{ steps.vcode.outputs.code }}
-          for locale in en-US ja; do
+          for locale in ru-RU; do
             dir="android/app/fastlane/metadata/android/${locale}/changelogs"
             mkdir -p "$dir"
             printf '%s\n' "$NOTES" > "${dir}/${CODE}.txt"
