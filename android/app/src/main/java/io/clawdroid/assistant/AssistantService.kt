@@ -409,7 +409,7 @@ class AssistantService : LifecycleService(), SavedStateRegistryOwner {
     private fun buildNotification(): Notification {
         return NotificationCompat.Builder(this, NotificationHelper.ASSISTANT_CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle("ClawDroid Assistant")
+            .setContentTitle("Джарвисджон")
             .setContentText(getString(io.clawdroid.R.string.assistant_notification_listening))
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .setOngoing(true)

@@ -26,7 +26,7 @@ data class AppSettingsUiState(
 
 private fun portError(value: String): String? {
     if (value.isEmpty()) return null
-    val port = value.toIntOrNull() ?: return "Invalid number"
+    val port = value.toIntOrNull() ?: return "Введите число"
     return if (port !in 1..65535) "1-65535" else null
 }
 
@@ -86,7 +86,7 @@ class AppSettingsViewModel(
                 _uiState.update { it.copy(saving = false) }
                 onComplete()
             } catch (e: Exception) {
-                _uiState.update { it.copy(saving = false, error = e.message ?: "Save failed") }
+                _uiState.update { it.copy(saving = false, error = e.message ?: "Не удалось сохранить настройки") }
             }
         }
     }

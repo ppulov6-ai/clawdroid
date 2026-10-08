@@ -30,7 +30,7 @@ class SetupUiStateTest {
         fun `non-numeric returns Invalid number`() {
             val state = SetupUiState(gatewayPort = "abc")
 
-            assertEquals("Invalid number", state.gatewayPortError)
+            assertEquals("Введите число", state.gatewayPortError)
         }
 
         @Test

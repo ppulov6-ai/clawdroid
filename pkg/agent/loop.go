@@ -631,6 +631,10 @@ func (al *AgentLoop) runAgentLoop(ctx context.Context, opts processOptions) (str
 		opts.ResolvedUser,
 	)
 
+	if len(messages) > 0 && messages[0].Role == "system" {
+		messages[0].Content += "\nОтвечай пользователю по-русски. Твоё имя — Джарвисджон. Не утверждай, что действие выполнено, если результат не подтверждён."
+	}
+
 	// 3. Save user message to session (with media if present)
 	userContent := opts.UserMessage
 	if len(opts.Media) > 0 {

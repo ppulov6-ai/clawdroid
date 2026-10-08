@@ -23,7 +23,7 @@ android {
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "io.clawdroid"
+        applicationId = "io.jarvisjon.android"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 5
@@ -43,7 +43,8 @@ android {
 
     buildTypes {
         debug {
-            signingConfig = signingConfigs.getByName("release")
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-jarvisjon-test"
         }
         release {
             isMinifyEnabled = true

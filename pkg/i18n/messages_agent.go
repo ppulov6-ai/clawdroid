@@ -9,11 +9,11 @@ func init() {
 		"agent.rate_limited_tool":        "Rate limited: %s",
 	})
 
-	register("ja", map[string]string{
-		"agent.migration_notice":         "USER.md が見つかりました。ユーザー管理が新しい形式（users.json）に変わりました。\nチャットで移行を依頼するか、手動で更新してください。\n\n手動更新の場合、以下の形式で ~/.clawdroid/data/users.json を作成:\n```json\n{\n  \"users\": [{\n    \"name\": \"あなたの名前\",\n    \"channels\": { \"websocket\": [\"default\"] },\n    \"memo\": [\"Preferred language: Japanese\"]\n  }]\n}\n```",
-		"agent.context_window_warning":   "⚠️ コンテキストウィンドウの上限を超えました。履歴を圧縮してリトライしています...",
-		"agent.memory_threshold_warning": "⚠️ メモリしきい値に達しました。会話履歴を最適化しています...",
-		"agent.rate_limited":             "レート制限中: %s。しばらくしてからお試しください。",
-		"agent.rate_limited_tool":        "レート制限中: %s",
+	register("ru", map[string]string{
+		"agent.migration_notice": "Найден USER.md. Управление пользователями переведено на новый формат users.json.\nПопросите выполнить перенос в чате или обновите данные вручную.\n\nДля ручного обновления создайте ~/.clawdroid/data/users.json в таком формате:\n```json\n{\n  \"users\": [{\n    \"name\": \"Ваше имя\",\n    \"channels\": { \"websocket\": [\"default\"] },\n    \"memo\": [\"Предпочитаемый язык: русский\"]\n  }]\n}\n```",
+		"agent.context_window_warning": "⚠️ Превышен размер контекста. Сжимаю историю и повторяю запрос...",
+		"agent.memory_threshold_warning": "⚠️ Достигнут предел памяти. Оптимизирую историю разговора...",
+		"agent.rate_limited": "Превышен лимит запросов: %s. Попробуйте позже.",
+		"agent.rate_limited_tool": "Превышен лимит запросов: %s",
 	})
 }

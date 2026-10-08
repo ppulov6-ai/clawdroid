@@ -41,43 +41,39 @@ func init() {
 		"agent.cmd.channel_mgr_error": "Channel manager not initialized",
 	})
 
-	register("ja", map[string]string{
+	register("ru", map[string]string{
 		// Telegram
-		"channel.thinking": "考え中... 💭",
+		"channel.thinking": "Думаю... 💭",
 
 		// WebSocket
-		"channel.config_required": "設定が必要です",
+		"channel.config_required": "Требуется настройка",
 
 		// Telegram commands
-		"cmd.help": `/start - ボットを開始
-/help - このヘルプメッセージを表示
-/show [model|channel] - 現在の設定を表示
-/list [models|channels] - 利用可能なオプションを一覧表示
-`,
-		"cmd.start":         "こんにちは！ClawDroid です 🦞",
-		"cmd.show.usage":    "使い方: /show [model|channel]",
-		"cmd.show.model":    "現在のモデル: %s",
-		"cmd.show.channel":  "現在のチャンネル: telegram",
-		"cmd.show.unknown":  "不明なパラメータ: %s。'model' か 'channel' を指定してください。",
-		"cmd.list.usage":    "使い方: /list [models|channels]",
-		"cmd.list.models":   "設定済みモデル: %s\n\nモデルを変更するには config.json を更新してください",
-		"cmd.list.channels": "有効なチャンネル:\n- %s",
-		"cmd.list.unknown":  "不明なパラメータ: %s。'models' か 'channels' を指定してください。",
+		"cmd.help": "/start — Запустить бота\n/help — Показать справку\n/show [model|channel] — Показать текущие настройки\n/list [models|channels] — Показать доступные варианты\n",
+		"cmd.start": "Здравствуйте! Я Джарвисджон.",
+		"cmd.show.usage": "Использование: /show [model|channel]",
+		"cmd.show.model": "Текущая модель: %s",
+		"cmd.show.channel": "Текущий канал: telegram",
+		"cmd.show.unknown": "Неизвестный параметр: %s. Укажите 'model' или 'channel'.",
+		"cmd.list.usage": "Использование: /list [models|channels]",
+		"cmd.list.models": "Настроенная модель: %s\n\nДля смены модели обновите config.json",
+		"cmd.list.channels": "Включённые каналы:\n%s",
+		"cmd.list.unknown": "Неизвестный параметр: %s. Укажите 'models' или 'channels'.",
 
 		// Agent loop commands
 		// cmd.show.usage and cmd.list.usage are shared with Telegram commands
-		"agent.cmd.show.model":        "現在のモデル: %s",
-		"agent.cmd.show.channel":      "現在のチャンネル: %s",
-		"agent.cmd.show.unknown":      "不明な表示対象: %s",
-		"agent.cmd.list.models":       "利用可能なモデル: glm-4.7, claude-3-5-sonnet, gpt-4o（config.json/env で設定）",
-		"agent.cmd.list.no_channels":  "有効なチャンネルはありません",
-		"agent.cmd.list.channels":     "有効なチャンネル: %s",
-		"agent.cmd.list.unknown":      "不明な一覧対象: %s",
-		"agent.cmd.switch.usage":      "使い方: /switch [model|channel] to <名前>",
-		"agent.cmd.switch.model":      "モデルを %s から %s に切り替えました",
-		"agent.cmd.switch.channel":    "対象チャンネルを %s に切り替えました（注: 現在は存在確認のみ）",
-		"agent.cmd.switch.not_found":  "チャンネル '%s' が見つからないか有効ではありません",
-		"agent.cmd.switch.unknown":    "不明な切り替え対象: %s",
-		"agent.cmd.channel_mgr_error": "チャンネルマネージャーが初期化されていません",
+		"agent.cmd.show.model": "Текущая модель: %s",
+		"agent.cmd.show.channel": "Текущий канал: %s",
+		"agent.cmd.show.unknown": "Неизвестный объект просмотра: %s",
+		"agent.cmd.list.models": "Доступные модели: glm-4.7, claude-3-5-sonnet, gpt-4o (настройка в config.json или переменных окружения)",
+		"agent.cmd.list.no_channels": "Нет включённых каналов",
+		"agent.cmd.list.channels": "Включённые каналы: %s",
+		"agent.cmd.list.unknown": "Неизвестный объект списка: %s",
+		"agent.cmd.switch.usage": "Использование: /switch [model|channel] to <имя>",
+		"agent.cmd.switch.model": "Модель изменена с %s на %s",
+		"agent.cmd.switch.channel": "Выбран канал %s (пока проверяется только его наличие)",
+		"agent.cmd.switch.not_found": "Канал '%s' не найден или отключён",
+		"agent.cmd.switch.unknown": "Неизвестный объект переключения: %s",
+		"agent.cmd.channel_mgr_error": "Управление каналами не инициализировано",
 	})
 }

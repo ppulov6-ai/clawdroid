@@ -64,7 +64,7 @@ class ConfigApiClient(private val settingsStore: GatewaySettingsStore, private v
     suspend fun getSchema(): ConfigSchema {
         return client.get("$baseUrl/api/config/schema") {
             if (apiKey.isNotEmpty()) header("Authorization", "Bearer $apiKey")
-            header("Accept-Language", context.resources.configuration.locales[0].language)
+            header("Accept-Language", "ru")
         }.ensureSuccess().body()
     }
 

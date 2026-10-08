@@ -57,9 +57,9 @@ class SetupApiClient(private val settingsStore: GatewaySettingsStore) : Closeabl
     private fun parseError(responseBody: String): String {
         return try {
             json.parseToJsonElement(responseBody).jsonObject["error"]?.jsonPrimitive?.content
-                ?: "request failed"
+                ?: "Не удалось выполнить запрос"
         } catch (_: Exception) {
-            "request failed"
+            "Не удалось выполнить запрос"
         }
     }
 }

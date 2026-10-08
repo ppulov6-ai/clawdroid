@@ -1,0 +1,63 @@
+name: Сборка Джарвисджон
+
+on:
+  push:
+    branches: [Jarvisjon-ru]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: jarvisjon-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  android:
+    name: Проверка и APK для S25
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Получить исходники
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Подготовить Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: Проверить Go
+        run: |
+          gofmt -w pkg/i18n pkg/agent/voice_prompt.go pkg/agent/loop.go
+          go test ./pkg/i18n/... ./pkg/agent/...
+      - name: Собрать встроенный модуль ARM64
+        run: make build-android-arm64
+      - name: Подготовить Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Подготовить Android SDK
+        uses: android-actions/setup-android@v3
+      - name: Подготовить Gradle
+        uses: gradle/actions/setup-gradle@v4
+      - name: Проверить и собрать приложение
+        working-directory: android
+        run: ./gradlew :app:lintEmbeddedDebug testEmbeddedDebugUnitTest :core:domain:testDebugUnitTest :feature:chat:testDebugUnitTest :app:assembleEmbeddedDebug --stacktrace
+      - name: Сохранить тестовый APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Jarvisjon-ru-S25-test
+          path: android/app/build/outputs/apk/embedded/debug/*.apk
+          if-no-files-found: error
+          retention-days: 14
+      - name: Сохранить отчёты проверок
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Отчёты-проверок
+          path: |
+            android/**/build/reports/
+            android/**/build/test-results/
+          if-no-files-found: ignore
+          retention-days: 14

@@ -30,7 +30,7 @@ class AppSettingsUiStateTest {
         fun `non-numeric returns Invalid number`() {
             val state = AppSettingsUiState(httpPort = "abc")
 
-            assertEquals("Invalid number", state.httpPortError)
+            assertEquals("Введите число", state.httpPortError)
         }
 
         @Test

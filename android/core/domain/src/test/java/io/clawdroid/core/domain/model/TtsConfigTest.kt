@@ -48,4 +48,17 @@ class TtsConfigTest {
         assertEquals(1.5f, config.speechRate)
         assertEquals(0.8f, config.pitch)
     }
+    @Test
+    fun `legacy extreme speed and pitch are limited`() {
+        val config = TtsConfig(speechRate = 2.0f, pitch = 0.5f).normalized()
+        assertEquals(1.2f, config.speechRate)
+        assertEquals(0.8f, config.pitch)
+    }
+
+    @Test
+    fun `invalid numeric settings use natural defaults`() {
+        val config = TtsConfig(speechRate = Float.NaN, pitch = Float.POSITIVE_INFINITY).normalized()
+        assertEquals(1.0f, config.speechRate)
+        assertEquals(1.0f, config.pitch)
+    }
 }

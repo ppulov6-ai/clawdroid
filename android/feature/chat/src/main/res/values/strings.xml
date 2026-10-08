@@ -1,46 +1,46 @@
 <resources>
     <!-- Connection Banner -->
-    <string name="connection_connecting">Connecting…</string>
-    <string name="connection_reconnecting">Reconnecting…</string>
-    <string name="connection_disconnected">Disconnected</string>
+    <string name="connection_connecting">Подключение…</string>
+    <string name="connection_reconnecting">Повторное подключение…</string>
+    <string name="connection_disconnected">Нет подключения</string>
 
     <!-- Settings Screen -->
-    <string name="settings_title">Settings</string>
-    <string name="settings_tts_section">Text-to-Speech</string>
-    <string name="settings_tts_speed">Speed</string>
-    <string name="settings_tts_pitch">Pitch</string>
-    <string name="settings_tts_speaking">Speaking…</string>
-    <string name="settings_tts_test">Test Voice</string>
-    <string name="settings_other_section">Other Settings</string>
-    <string name="settings_backend_config">Backend Config</string>
-    <string name="settings_backend_config_desc">Configure backend server settings</string>
-    <string name="settings_app_settings">App Settings</string>
-    <string name="settings_app_settings_desc">Gateway connection settings</string>
-    <string name="settings_system_default">System Default</string>
-    <string name="settings_engine_label">Engine</string>
-    <string name="settings_voice_label">Voice</string>
-    <string name="settings_open">Open</string>
-    <string name="btn_back">Back</string>
+    <string name="settings_title">Настройки</string>
+    <string name="settings_tts_section">Озвучка текста</string>
+    <string name="settings_tts_speed">Скорость</string>
+    <string name="settings_tts_pitch">Высота голоса</string>
+    <string name="settings_tts_speaking">Говорю…</string>
+    <string name="settings_tts_test">Проверить голос</string>
+    <string name="settings_other_section">Другие настройки</string>
+    <string name="settings_backend_config">Настройки сервера</string>
+    <string name="settings_backend_config_desc">Настроить параметры локального сервера</string>
+    <string name="settings_app_settings">Настройки приложения</string>
+    <string name="settings_app_settings_desc">Параметры подключения к шлюзу</string>
+    <string name="settings_system_default">Системный голос</string>
+    <string name="settings_engine_label">Движок озвучки</string>
+    <string name="settings_voice_label">Голос</string>
+    <string name="settings_open">Открыть</string>
+    <string name="btn_back">Назад</string>
 
     <!-- Voice Mode -->
-    <string name="voice_close">Close</string>
-    <string name="voice_camera_on">Turn on camera</string>
-    <string name="voice_camera_off">Turn off camera</string>
-    <string name="voice_listening">Listening…</string>
-    <string name="voice_paused">Paused</string>
-    <string name="voice_sending">Sending…</string>
-    <string name="voice_thinking">Thinking…</string>
-    <string name="voice_speaking">Speaking…</string>
-    <string name="voice_error">Error</string>
+    <string name="voice_close">Закрыть</string>
+    <string name="voice_camera_on">Включить камеру</string>
+    <string name="voice_camera_off">Выключить камеру</string>
+    <string name="voice_listening">Слушаю…</string>
+    <string name="voice_paused">Приостановлено</string>
+    <string name="voice_sending">Отправка…</string>
+    <string name="voice_thinking">Думаю…</string>
+    <string name="voice_speaking">Говорю…</string>
+    <string name="voice_error">Ошибка</string>
 
     <!-- Message Input -->
-    <string name="input_camera">Camera</string>
-    <string name="input_gallery">Gallery</string>
-    <string name="input_voice">Voice</string>
-    <string name="input_send">Send</string>
-    <string name="input_placeholder">Message…</string>
+    <string name="input_camera">Камера</string>
+    <string name="input_gallery">Галерея</string>
+    <string name="input_voice">Голос</string>
+    <string name="input_send">Отправить</string>
+    <string name="input_placeholder">Сообщение…</string>
 
     <!-- Chat Screen -->
-    <string name="chat_title">ClawDroid</string>
-    <string name="chat_settings">Settings</string>
+    <string name="chat_title">Джарвисджон</string>
+    <string name="chat_settings">Настройки</string>
 </resources>

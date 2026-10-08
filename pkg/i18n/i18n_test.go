@@ -12,15 +12,17 @@ func TestNormalizeLocale(t *testing.T) {
 	}{
 		{"", "en"},
 		{"en", "en"},
-		{"ja", "ja"},
-		{"ja-JP", "ja"},
+		{"ru", "ru"},
+		{"ru-RU", "ru"},
 		{"en_US", "en"},
 		{"EN", "en"},
-		{"  ja  ", "ja"},
+		{"RU", "ru"},
+		{"ru_RU", "ru"},
+		{"  ru  ", "ru"},
 		// Accept-Language header formats
-		{"ja, en;q=0.9", "ja"},
+		{"ru, en;q=0.9", "ru"},
 		{"en-US,en;q=0.5", "en"},
-		{"ja-JP, en-US;q=0.8, fr;q=0.5", "ja"},
+		{"ru-RU, en-US;q=0.8, fr;q=0.5", "ru"},
 		{"en;q=1.0", "en"},
 	}
 	for _, tt := range tests {
@@ -38,10 +40,10 @@ func TestT(t *testing.T) {
 		t.Errorf("T(en, status.thinking) = %q", got)
 	}
 
-	// Japanese
-	got = T("ja", "status.thinking")
-	if got != "思考中..." {
-		t.Errorf("T(ja, status.thinking) = %q", got)
+	// Russian
+	got = T("ru", "status.thinking")
+	if got != "Думаю..." {
+		t.Errorf("T(ru, status.thinking) = %q", got)
 	}
 
 	// Fallback to en for unknown locale
@@ -63,17 +65,17 @@ func TestTf(t *testing.T) {
 		t.Errorf("Tf(en, status.searching_q, golang) = %q", got)
 	}
 
-	got = Tf("ja", "status.searching_q", "golang")
-	if got != "検索中...（golang）" {
-		t.Errorf("Tf(ja, status.searching_q, golang) = %q", got)
+	got = Tf("ru", "status.searching_q", "golang")
+	if got != "Ищу... (golang)" {
+		t.Errorf("Tf(ru, status.searching_q, golang) = %q", got)
 	}
 }
 
 func TestConfigLabels(t *testing.T) {
-	// Japanese config label (namespaced with "config." prefix)
-	got := T("ja", "config.Model")
-	if got != "モデル" {
-		t.Errorf("T(ja, config.Model) = %q, want モデル", got)
+	// Russian config label (namespaced with "config." prefix)
+	got := T("ru", "config.Model")
+	if got != "Модель" {
+		t.Errorf("T(ru, config.Model) = %q, want Модель", got)
 	}
 
 	// English config label returns the struct tag value
@@ -89,32 +91,44 @@ func TestAgentMessages(t *testing.T) {
 		t.Error("expected English warning message, got key itself")
 	}
 
-	got = T("ja", "agent.context_window_warning")
+	got = T("ru", "agent.context_window_warning")
 	if got == "agent.context_window_warning" {
-		t.Error("expected Japanese warning message, got key itself")
+		t.Error("expected Russian warning message, got key itself")
 	}
 }
 
-// TestFormatSpecifierConsistency verifies that en and ja translations have
+// TestFormatSpecifierConsistency verifies that en and ru translations have
 // matching format specifiers (%s, %d, etc.) to prevent runtime panics in Tf().
 func TestFormatSpecifierConsistency(t *testing.T) {
 	re := regexp.MustCompile(`%[sdvfgqxobt]`)
 
 	enMessages := messages["en"]
-	jaMessages := messages["ja"]
+	ruMessages := messages["ru"]
 
 	for key, enVal := range enMessages {
-		jaVal, ok := jaMessages[key]
+		ruVal, ok := ruMessages[key]
 		if !ok {
-			continue // ja doesn't have this key; fallback to en is fine
+			t.Errorf("missing Russian translation for %q", key)
+			continue
 		}
 
 		enSpecs := re.FindAllString(enVal, -1)
-		jaSpecs := re.FindAllString(jaVal, -1)
+		ruSpecs := re.FindAllString(ruVal, -1)
 
-		if len(enSpecs) != len(jaSpecs) {
-			t.Errorf("format specifier count mismatch for key %q: en has %d (%v), ja has %d (%v)",
-				key, len(enSpecs), enSpecs, len(jaSpecs), jaSpecs)
+		if len(enSpecs) != len(ruSpecs) {
+			t.Errorf("format specifier count mismatch for key %q: en has %d (%v), ru has %d (%v)",
+				key, len(enSpecs), enSpecs, len(ruSpecs), ruSpecs)
+		}
+	}
+}
+
+func TestRussianCatalogCoverage(t *testing.T) {
+	if len(messages["ru"]) != len(messages["en"]) {
+		t.Errorf("catalog size mismatch: ru=%d, en=%d", len(messages["ru"]), len(messages["en"]))
+	}
+	for key := range messages["en"] {
+		if value, ok := messages["ru"][key]; !ok || value == "" {
+			t.Errorf("missing Russian translation for %q", key)
 		}
 	}
 }

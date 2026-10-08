@@ -34,7 +34,7 @@ data class SetupUiState(
     val gatewayPortError: String?
         get() {
             if (gatewayPort.isEmpty()) return null
-            val port = gatewayPort.toIntOrNull() ?: return "Invalid number"
+            val port = gatewayPort.toIntOrNull() ?: return "Введите число"
             return if (port !in 1..65535) "1-65535" else null
         }
 
@@ -146,7 +146,7 @@ class SetupViewModel(
                 _uiState.update { it.copy(loading = false) }
                 onComplete()
             } catch (e: Exception) {
-                _uiState.update { it.copy(loading = false, error = e.message ?: "Setup failed") }
+                _uiState.update { it.copy(loading = false, error = e.message ?: "Не удалось завершить настройку") }
             }
         }
     }

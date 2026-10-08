@@ -52,6 +52,7 @@ class TtsCatalogRepositoryImpl(
     private fun initTtsEngine(enginePackageName: String?) {
         tts?.shutdown()
         initialized = false
+        _availableVoices.value = emptyList()
         currentEnginePackage = enginePackageName
 
         val listener = TextToSpeech.OnInitListener { status ->
@@ -83,12 +84,12 @@ class TtsCatalogRepositoryImpl(
         val engine = tts ?: return
         val voices = engine.voices ?: return
         _availableVoices.value = voices
-            .filter { !it.isNetworkConnectionRequired }
+            .filter { it.locale.language == "ru" && !it.isNetworkConnectionRequired }
             .sortedBy { it.locale.displayName }
             .map { voice ->
                 TtsVoiceInfo(
                     name = voice.name,
-                    displayLabel = "${voice.locale.displayName} - ${voice.name}",
+                    displayLabel = "${voice.locale.getDisplayName(java.util.Locale.forLanguageTag("ru-RU"))} - ${voice.name}",
                     locale = voice.locale.toString()
                 )
             }

@@ -89,91 +89,91 @@ func init() {
 		"status.mcp_default": "MCP operation...",
 	})
 
-	register("ja", map[string]string{
+	register("ru", map[string]string{
 		// status labels
-		"status.thinking":    "思考中...",
-		"status.processing":  "処理中...",
-		"status.interrupted": "[応答は中断されました]",
+		"status.thinking": "Думаю...",
+		"status.processing": "Обрабатываю...",
+		"status.interrupted": "[Ответ прерван]",
 
 		// web
-		"status.searching":     "検索中...",
-		"status.searching_q":   "検索中...（%s）",
-		"status.fetching_page": "ページ取得中...",
-		"status.fetching_q":    "ページ取得中...（%s）",
+		"status.searching": "Ищу...",
+		"status.searching_q": "Ищу... (%s)",
+		"status.fetching_page": "Загружаю страницу...",
+		"status.fetching_q": "Загружаю страницу... (%s)",
 
 		// file operations
-		"status.reading_file":     "ファイル読み取り中...",
-		"status.reading_file_q":   "ファイル読み取り中...（%s）",
-		"status.writing_file":     "ファイル書き込み中...",
-		"status.writing_file_q":   "ファイル書き込み中...（%s）",
-		"status.editing_file":     "ファイル編集中...",
-		"status.editing_file_q":   "ファイル編集中...（%s）",
-		"status.appending_file":   "ファイル追記中...",
-		"status.appending_file_q": "ファイル追記中...（%s）",
+		"status.reading_file": "Читаю файл...",
+		"status.reading_file_q": "Читаю файл... (%s)",
+		"status.writing_file": "Записываю файл...",
+		"status.writing_file_q": "Записываю файл... (%s)",
+		"status.editing_file": "Редактирую файл...",
+		"status.editing_file_q": "Редактирую файл... (%s)",
+		"status.appending_file": "Дополняю файл...",
+		"status.appending_file_q": "Дополняю файл... (%s)",
 
 		// directory
-		"status.listing_dir":   "フォルダ確認中...",
-		"status.listing_dir_q": "フォルダ確認中...（%s）",
+		"status.listing_dir": "Проверяю папку...",
+		"status.listing_dir_q": "Проверяю папку... (%s)",
 
 		// exec
-		"status.running_command":   "コマンド実行中...",
-		"status.running_command_q": "コマンド実行中...（%s）",
+		"status.running_command": "Выполняю команду...",
+		"status.running_command_q": "Выполняю команду... (%s)",
 
 		// memory
-		"status.memory_read":         "メモリ読み込み中...",
-		"status.memory_read_daily":   "今日のメモ読み込み中...",
-		"status.memory_write":        "メモリ書き込み中...",
-		"status.memory_append_daily": "今日のメモ追記中...",
-		"status.memory_default":      "メモリ操作中...",
+		"status.memory_read": "Загружаю память...",
+		"status.memory_read_daily": "Загружаю сегодняшние заметки...",
+		"status.memory_write": "Сохраняю в память...",
+		"status.memory_append_daily": "Дополняю сегодняшние заметки...",
+		"status.memory_default": "Работаю с памятью...",
 
 		// skill
-		"status.skill_list":    "スキル一覧取得中...",
-		"status.skill_read":    "スキル読み込み中...",
-		"status.skill_read_q":  "スキル読み込み中...（%s）",
-		"status.skill_default": "スキル操作中...",
+		"status.skill_list": "Получаю список навыков...",
+		"status.skill_read": "Загружаю навык...",
+		"status.skill_read_q": "Загружаю навык... (%s)",
+		"status.skill_default": "Работаю с навыком...",
 
 		// cron
-		"status.cron_add":     "リマインダー設定中...",
-		"status.cron_list":    "スケジュール一覧取得中...",
-		"status.cron_remove":  "スケジュール削除中...",
-		"status.cron_default": "スケジュール変更中...",
+		"status.cron_add": "Создаю напоминание...",
+		"status.cron_list": "Получаю расписание...",
+		"status.cron_remove": "Удаляю задачу из расписания...",
+		"status.cron_default": "Изменяю расписание...",
 
 		// message
-		"status.sending_message": "メッセージ送信中...",
+		"status.sending_message": "Отправляю сообщение...",
 
 		// spawn/subagent
-		"status.spawn":      "サブタスク開始中...",
-		"status.spawn_q":    "サブタスク開始中...（%s）",
-		"status.subagent":   "サブタスク実行中...",
-		"status.subagent_q": "サブタスク実行中...（%s）",
+		"status.spawn": "Запускаю подзадачу...",
+		"status.spawn_q": "Запускаю подзадачу... (%s)",
+		"status.subagent": "Выполняю подзадачу...",
+		"status.subagent_q": "Выполняю подзадачу... (%s)",
 
 		// android
-		"status.android_search_apps":  "アプリ検索中...",
-		"status.android_app_info":     "アプリ情報取得中...",
-		"status.android_app_info_q":   "アプリ情報取得中...（%s）",
-		"status.android_launch_app":   "アプリ起動中...",
-		"status.android_launch_app_q": "アプリ起動中...（%s）",
-		"status.android_screenshot":   "スクリーンショット撮影中...",
-		"status.android_get_ui_tree":  "UI要素取得中...",
-		"status.android_tap":          "タップ中...",
-		"status.android_swipe":        "スワイプ中...",
-		"status.android_text":         "テキスト入力中...",
-		"status.android_keyevent":     "キー操作中...",
-		"status.android_keyevent_q":   "キー操作中...（%s）",
-		"status.android_broadcast":    "ブロードキャスト送信中...",
-		"status.android_intent":       "インテント送信中...",
-		"status.android_default":      "デバイス操作中...",
+		"status.android_search_apps": "Ищу приложения...",
+		"status.android_app_info": "Получаю сведения о приложении...",
+		"status.android_app_info_q": "Получаю сведения о приложении... (%s)",
+		"status.android_launch_app": "Открываю приложение...",
+		"status.android_launch_app_q": "Открываю приложение... (%s)",
+		"status.android_screenshot": "Делаю снимок экрана...",
+		"status.android_get_ui_tree": "Получаю элементы экрана...",
+		"status.android_tap": "Нажимаю...",
+		"status.android_swipe": "Прокручиваю...",
+		"status.android_text": "Ввожу текст...",
+		"status.android_keyevent": "Нажимаю клавишу...",
+		"status.android_keyevent_q": "Нажимаю клавишу... (%s)",
+		"status.android_broadcast": "Отправляю системное событие...",
+		"status.android_intent": "Отправляю системную команду...",
+		"status.android_default": "Управляю устройством...",
 
 		// exit
-		"status.exit": "アシスタント終了中...",
+		"status.exit": "Завершаю работу помощника...",
 
 		// mcp
-		"status.mcp_list":    "MCPサーバー一覧取得中...",
-		"status.mcp_tools":   "MCPツール取得中...",
-		"status.mcp_tools_q": "MCPツール取得中...（%s）",
-		"status.mcp_call":    "MCPツール実行中...",
-		"status.mcp_call_q":  "MCPツール実行中...（%s）",
-		"status.mcp_call_sq": "MCPツール実行中...（%s/%s）",
-		"status.mcp_default": "MCP操作中...",
+		"status.mcp_list": "Получаю список серверов MCP...",
+		"status.mcp_tools": "Получаю инструменты MCP...",
+		"status.mcp_tools_q": "Получаю инструменты MCP... (%s)",
+		"status.mcp_call": "Выполняю инструмент MCP...",
+		"status.mcp_call_q": "Выполняю инструмент MCP... (%s)",
+		"status.mcp_call_sq": "Выполняю инструмент MCP... (%s/%s)",
+		"status.mcp_default": "Работаю с MCP...",
 	})
 }

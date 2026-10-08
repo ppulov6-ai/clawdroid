@@ -58,7 +58,7 @@ class WebSocketClient(
                     _setupRequired.value = false
                     val currentWsUrl = wsUrl
                     val separator = if ('?' in currentWsUrl) '&' else '?'
-                    val locale = context.resources.configuration.locales[0].language
+                    val locale = "ru"
                     val url = "${currentWsUrl}${separator}client_id=$clientId&client_type=$clientType&locale=$locale"
                     client.webSocket(url) {
                         session = this

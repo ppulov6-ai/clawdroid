@@ -75,12 +75,23 @@ class TextToSpeechWrapper(
         initTtsEngine(enginePackageName)
     }
 
-    private fun applyConfig(engine: TextToSpeech) {
-        engine.setSpeechRate(currentConfig.speechRate)
-        engine.setPitch(currentConfig.pitch)
-        currentConfig.voiceName?.let { name ->
-            engine.voices?.firstOrNull { it.name == name }?.let { engine.voice = it }
+    private fun applyConfig(engine: TextToSpeech): Boolean {
+        // Проверяем даже ранее сохранённый голос: только русский и без сети.
+        val voices = engine.voices.orEmpty().filter {
+            it.locale.language == "ru" && !it.isNetworkConnectionRequired
         }
+        val voice = voices.firstOrNull { it.name == currentConfig.voiceName }
+            ?: voices.sortedWith(
+                compareByDescending<android.speech.tts.Voice> { it.locale.country == "RU" }
+                    .thenByDescending { it.quality }
+                    .thenBy { it.name }
+            ).firstOrNull()
+            ?: return false
+        if (engine.setVoice(voice) != TextToSpeech.SUCCESS) return false
+        val config = currentConfig.normalized()
+        engine.setSpeechRate(config.speechRate)
+        engine.setPitch(config.pitch)
+        return true
     }
 
     suspend fun speak(text: String): Boolean = suspendCancellableCoroutine { cont ->
@@ -90,7 +101,10 @@ class TextToSpeechWrapper(
             return@suspendCancellableCoroutine
         }
 
-        applyConfig(engine)
+        if (!applyConfig(engine)) {
+            cont.resume(false)
+            return@suspendCancellableCoroutine
+        }
 
         val utteranceId = UUID.randomUUID().toString()
 
@@ -121,7 +135,11 @@ class TextToSpeechWrapper(
             engine.stop()
         }
 
-        engine.speak(text, TextToSpeech.QUEUE_FLUSH, null, utteranceId)
+        if (engine.speak(text, TextToSpeech.QUEUE_FLUSH, null, utteranceId) == TextToSpeech.ERROR
+            && cont.isActive
+        ) {
+            cont.resume(false)
+        }
     }
 
     fun stop() {

@@ -31,14 +31,14 @@ class TtsSettingsRepositoryImpl(
             voiceName = prefs[Keys.VOICE_NAME],
             speechRate = prefs[Keys.SPEECH_RATE] ?: 1.0f,
             pitch = prefs[Keys.PITCH] ?: 1.0f
-        )
+        ).normalized()
     }
 
     override suspend fun updateEngine(packageName: String?) {
         context.ttsDataStore.edit { prefs ->
             if (packageName != null) prefs[Keys.ENGINE] = packageName
             else prefs.remove(Keys.ENGINE)
-            // エンジン変更時は音声選択をリセット
+            // При смене движка сбрасываем выбор голоса.
             prefs.remove(Keys.VOICE_NAME)
         }
     }
@@ -51,10 +51,10 @@ class TtsSettingsRepositoryImpl(
     }
 
     override suspend fun updateSpeechRate(rate: Float) {
-        context.ttsDataStore.edit { it[Keys.SPEECH_RATE] = rate.coerceIn(0.5f, 2.0f) }
+        context.ttsDataStore.edit { it[Keys.SPEECH_RATE] = TtsConfig(speechRate = rate).normalized().speechRate }
     }
 
     override suspend fun updatePitch(pitch: Float) {
-        context.ttsDataStore.edit { it[Keys.PITCH] = pitch.coerceIn(0.5f, 2.0f) }
+        context.ttsDataStore.edit { it[Keys.PITCH] = TtsConfig(pitch = pitch).normalized().pitch }
     }
 }
