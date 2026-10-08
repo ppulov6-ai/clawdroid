@@ -245,7 +245,7 @@ fun AssistantPillBar(
                                 if (state.phase == VoicePhase.PAUSED) LucideR.drawable.lucide_ic_mic_off
                                 else LucideR.drawable.lucide_ic_mic
                             ),
-                            contentDescription = if (state.phase == VoicePhase.PAUSED) "Resume listening" else "Pause listening",
+                            contentDescription = if (state.phase == VoicePhase.PAUSED) "Продолжить прослушивание" else "Приостановить прослушивание",
                             modifier = Modifier.size(20.dp),
                             tint = phaseColor(state.phase)
                         )
@@ -272,7 +272,7 @@ fun AssistantPillBar(
                                 if (state.isScreenCaptureActive) LucideR.drawable.lucide_ic_monitor_off
                                 else LucideR.drawable.lucide_ic_monitor
                             ),
-                            contentDescription = if (state.isScreenCaptureActive) "Turn off screen capture" else "Turn on screen capture",
+                            contentDescription = if (state.isScreenCaptureActive) "Выключить снимки экрана" else "Включить снимки экрана",
                             modifier = Modifier.size(18.dp),
                             tint = if (state.isScreenCaptureActive) GradientCyan else TextSecondary
                         )
@@ -288,7 +288,7 @@ fun AssistantPillBar(
                                 if (state.isCameraActive) LucideR.drawable.lucide_ic_camera_off
                                 else LucideR.drawable.lucide_ic_camera
                             ),
-                            contentDescription = if (state.isCameraActive) "Turn off camera" else "Turn on camera",
+                            contentDescription = if (state.isCameraActive) "Выключить камеру" else "Включить камеру",
                             modifier = Modifier.size(18.dp),
                             tint = if (state.isCameraActive) GradientCyan else TextSecondary
                         )
@@ -304,7 +304,7 @@ fun AssistantPillBar(
                                 if (isAtTop) LucideR.drawable.lucide_ic_chevron_down
                                 else LucideR.drawable.lucide_ic_chevron_up
                             ),
-                            contentDescription = if (isAtTop) "Move to bottom" else "Move to top",
+                            contentDescription = if (isAtTop) "Переместить вниз" else "Переместить вверх",
                             modifier = Modifier.size(18.dp),
                             tint = TextSecondary
                         )
@@ -317,7 +317,7 @@ fun AssistantPillBar(
                     ) {
                         Icon(
                             painter = painterResource(LucideR.drawable.lucide_ic_x),
-                            contentDescription = "Close",
+                            contentDescription = "Закрыть",
                             modifier = Modifier.size(18.dp),
                             tint = TextSecondary
                         )

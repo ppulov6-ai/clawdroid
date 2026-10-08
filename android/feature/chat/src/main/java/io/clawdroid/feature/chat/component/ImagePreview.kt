@@ -59,7 +59,7 @@ fun ImagePreviewRow(
                 ) {
                     Icon(
                         painter = painterResource(LucideR.drawable.lucide_ic_x),
-                        contentDescription = "Remove",
+                        contentDescription = "Удалить изображение",
                         modifier = Modifier.size(14.dp),
                         tint = TextSecondary
                     )

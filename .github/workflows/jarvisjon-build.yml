@@ -28,7 +28,7 @@ jobs:
           go-version-file: go.mod
       - name: Проверить Go
         run: |
-          gofmt -w pkg/i18n pkg/agent/voice_prompt.go pkg/agent/loop.go
+          gofmt -w pkg/i18n pkg/agent/voice_prompt.go pkg/agent/loop.go pkg/agent/status_test.go pkg/gateway/server_test.go pkg/broadcast
           go generate ./...
           go test ./...
       - name: Собрать встроенный модуль ARM64

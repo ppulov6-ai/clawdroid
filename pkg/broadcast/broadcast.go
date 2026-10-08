@@ -3,6 +3,7 @@ package broadcast
 import (
 	"encoding/json"
 	"fmt"
+	"os"
 	"os/exec"
 
 	"github.com/KarakuriAgent/clawdroid/pkg/logger"
@@ -21,6 +22,13 @@ type Message struct {
 	Type    string `json:"type,omitempty"`
 }
 
+func targetPackage() string {
+	if name := os.Getenv("CLAWDROID_ANDROID_PACKAGE"); name != "" {
+		return name
+	}
+	return Package
+}
+
 // Send sends a message to the Android app via am broadcast.
 // This works because the Go server runs inside Termux on the same device.
 func Send(msg Message) error {
@@ -31,7 +39,7 @@ func Send(msg Message) error {
 
 	cmd := exec.Command("am", "broadcast",
 		"-a", Action,
-		"-p", Package,
+		"-p", targetPackage(),
 		"--es", "message", string(data),
 	)
 
